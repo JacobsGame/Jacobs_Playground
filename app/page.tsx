@@ -1,41 +1,7 @@
 "use client";
-import {
-    Stack,
-    Grid,
-    Box,
-    Avatar,
-    IconButton,
-    IconButtonProps,
-    Typography,
-    Theme,
-    Collapse,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import { styled } from "@mui/system";
-import { useState } from "react";
-
-interface CardData {
-    avatar: string;
-    title: string;
-    time: number;
-    photoUrl: string;
-    content: string;
-    detail: string;
-}
-
-interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-}
-
+import { CardData, MyCard } from "@/components/MyCard";
+import { Grid, Stack, colors } from "@mui/material";
+import { Suspense } from "react";
 const MockData: CardData[] = [
     {
         avatar: "R",
@@ -89,79 +55,16 @@ const MockData: CardData[] = [
 
 export default function Home() {
     return (
-        <Grid m={5} container>
+        <Grid container display={"flex"} my={10}>
             {MockData.map((data, index) => (
-                <Grid key={`grid_${index}`} item xs={6}>
-                    <CustomCard key={index} {...data} />
+                <Grid key={`grid_${index}`} item xs>
+                    <Stack display={"flex"} alignItems={"center"}>
+                        <Suspense fallback={<div></div>}>
+                            <MyCard key={index} {...data} />
+                        </Suspense>
+                    </Stack>
                 </Grid>
             ))}
         </Grid>
     );
 }
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-    marginLeft: "auto",
-    transition: (theme.transitions as any).create("transform", {
-        duration: (theme.transitions as any).duration.shortest,
-    }),
-}));
-
-const CustomCard = ({
-    avatar,
-    title,
-    time,
-    photoUrl,
-    content,
-    detail,
-}: CardData) => {
-    const [expanded, setExpanded] = useState(false);
-
-    const handleExpandedClick = () => {
-        setExpanded(!expanded);
-    };
-    return (
-        <Card
-            sx={{
-                m: 10,
-            }}
-        >
-            <CardHeader
-                avatar={<Avatar>{avatar}</Avatar>}
-                action={
-                    <IconButton>
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={title}
-                subheader={`${time}`}
-            />
-            <CardMedia component={"img"} height={194} image={photoUrl} />
-            <CardContent>
-                <Typography variant="body2" color={"text.secondary"}>
-                    {content}
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <IconButton>
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton>
-                    <ShareIcon />
-                </IconButton>
-                <ExpandMore expand={expanded} onClick={handleExpandedClick}>
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout={"auto"} unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>Methods</Typography>
-                    <Typography paragraph>{detail}</Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
-    );
-};
