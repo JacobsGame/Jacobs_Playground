@@ -6,6 +6,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { FirstTheme } from "../themes/Theme";
 import { App } from "@/templates/App";
 import React from "react";
+import { Providers } from "../lib/Redux/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,18 +23,20 @@ export default function RootLayout({
     return (
         <React.StrictMode>
             <html lang="en">
-                <body className={`${inter.className} w-full h-full`}>
-                    <AppRouterCacheProvider
-                        options={{
-                            enableCssLayer: true,
-                        }}
-                    >
-                        <ThemeProvider theme={FirstTheme}>
-                            <CssBaseline />
-                            <App>{children}</App>
-                        </ThemeProvider>
-                    </AppRouterCacheProvider>
-                </body>
+                <Providers>
+                    <body className={`${inter.className}`}>
+                        <AppRouterCacheProvider
+                            options={{
+                                enableCssLayer: true,
+                            }}
+                        >
+                            <ThemeProvider theme={FirstTheme}>
+                                <CssBaseline />
+                                <App>{children}</App>
+                            </ThemeProvider>
+                        </AppRouterCacheProvider>
+                    </body>
+                </Providers>
             </html>
         </React.StrictMode>
     );

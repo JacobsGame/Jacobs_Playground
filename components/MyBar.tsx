@@ -57,7 +57,7 @@ export const MyBar = ({}) => {
                 >
                     Jacob`s Game
                 </Typography>
-                <Stack direction={"row"} spacing={2}>
+                <Stack direction={"row"} spacing={100}>
                     <Button color={"inherit"}>Features</Button>
                     <Button color={"inherit"}>Pricing</Button>
                     <Button color={"inherit"}>About</Button>
@@ -73,6 +73,12 @@ export const MyBar = ({}) => {
                         Resources
                     </Button>
                     <Button color={"inherit"}>Login</Button>
+                    <Button color={"inherit"}>
+                        <Link href="/game/simple">Simple</Link>
+                    </Button>
+                    <Button color={"inherit"}>
+                        <Link href="/game/carshader">Car Shader</Link>
+                    </Button>
                 </Stack>
                 <Menu
                     id="resources-menu"
@@ -99,15 +105,11 @@ export const MyBar = ({}) => {
                     open={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}
                 >
-                    <Box
-                        sx={{
-                            width: "30vw",
-                        }}
-                    >
+                    {/* <Box>
                         <Typography variant="h6" component={"div"}>
                             Side Panel
                         </Typography>
-                    </Box>
+                    </Box> */}
                 </Drawer>
             </Toolbar>
         </AppBar>
