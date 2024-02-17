@@ -1,4 +1,8 @@
 "use client";
+import dynamic from "next/dynamic";
+const PlayerInfo = dynamic(() => import("./PlayerInfo"), {
+    ssr: false,
+});
 import React, { useEffect, useRef, useState } from "react";
 import { GroupProps, useFrame, useGraph, useThree } from "@react-three/fiber";
 import { Joystick, PlayerState, isHost } from "playroomkit";
@@ -9,7 +13,8 @@ import {
     RigidBody,
     vec3,
 } from "@react-three/rapier";
-import { Billboard, CameraControls } from "@react-three/drei";
+import { CameraControls } from "@react-three/drei";
+
 import { BulletData, BulletUserData } from "./Bullet";
 
 interface CharacterControllerProps extends GroupProps {
@@ -185,7 +190,7 @@ export const CharacterController = ({
                     }
                 }}
             >
-                <PlayerInfo state={state} />
+                {typeof window !== "undefined" && <PlayerInfo state={state} />}
                 <group ref={characterRef}>
                     <CharacterSoldier
                         color={state.getProfile().color.hexString as string}
@@ -205,29 +210,6 @@ export const CharacterController = ({
                 <CapsuleCollider args={[0.7, 0.6]} position={[0, 1.28, 0]} />
             </RigidBody>
         </group>
-    );
-};
-
-const PlayerInfo = ({ state }: { state: PlayerState }) => {
-    const health = state.getState("health");
-    const name = state.getProfile().name;
-    return (
-        <Billboard position-y={2.5}>
-            {/* <Text position-y={0.36} fontSize={0.4}>
-                {name}
-                <meshBasicMaterial
-                    color={state.getProfile().color.hexString as string}
-                />
-            </Text> */}
-            <mesh position-z={-0.1}>
-                <planeGeometry args={[1, 0.2]} />
-                <meshBasicMaterial color="black" transparent opacity={0.5} />
-            </mesh>
-            <mesh scale-x={health / 100} position-x={-0.5 * (1 - health / 100)}>
-                <planeGeometry args={[1, 0.2]} />
-                <meshBasicMaterial color="red" />
-            </mesh>
-        </Billboard>
     );
 };
 

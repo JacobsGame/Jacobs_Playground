@@ -1,6 +1,6 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
 import {
     Environment,
     Loader,
@@ -28,7 +28,7 @@ interface PlayerProps {
     joystick: Joystick;
 }
 
-export const ShooterScene = () => {
+export default function ShooterScene() {
     return (
         <>
             <Loader />
@@ -57,7 +57,7 @@ export const ShooterScene = () => {
             </Canvas>
         </>
     );
-};
+}
 
 const Experience = () => {
     const [players, setPlayers] = useState<PlayerProps[]>([]);
