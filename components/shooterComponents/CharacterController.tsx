@@ -94,7 +94,7 @@ export const CharacterController = ({
             );
         }
 
-        if (state.getState("Death")) {
+        if (state.getState("dead")) {
             setAnimation("Death");
             return;
         }
