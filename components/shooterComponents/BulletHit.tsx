@@ -17,6 +17,8 @@ const AnimatedBox: React.FC<AnimatedBoxProps> = ({ scale, target, speed }) => {
     const ref = useRef<any>();
 
     useFrame((_, delta) => {
+        if (!ref.current) return;
+
         if (ref.current.scale.x > 0) {
             ref.current.scale.x =
                 ref.current.scale.y =
