@@ -22,10 +22,17 @@ import { Physics } from "@react-three/rapier";
 import { Bullet, BulletData } from "@/components/shooterComponents/Bullet";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Leaderboard } from "@/components/shooterComponents/Leaderboard";
+import { Vector3 } from "three";
+import { BulletHit } from "@/components/shooterComponents/BulletHit";
 
 interface PlayerProps {
     state: PlayerState;
     joystick: Joystick;
+}
+
+interface HitProps {
+    id: string;
+    position: Vector3;
 }
 
 export default function ShooterScene() {
@@ -66,6 +73,10 @@ const Experience = () => {
         "bullets",
         []
     ); // useState<BulletData[]>([]);
+
+    const [hits, setHits] = useState<HitProps[]>([]);
+    const [networkHits, setNetworkHits] = useMultiplayerState("hits", []); // useState<BulletData[]>([]);
+
     const start = async () => {
         await insertCoin();
     };
@@ -74,19 +85,26 @@ const Experience = () => {
         setNetworkBullets(bullets);
     }, [bullets]);
 
+    useEffect(() => {
+        setNetworkHits(hits);
+    }, [hits]);
+
     const onFire = (bullet: BulletData) => {
         setBullets((bullets) => [...bullets, bullet]);
     };
 
     const onKilled = (_victim: string, killer: string) => {
-        const killerState = players.find(
-            (p) => p.state.getState("id") === killer
-        )?.state;
+        const killerState = players.find((p) => p.state.id === killer)?.state;
         killerState?.setState("kills", killerState.getState("kills") + 1);
     };
 
-    const onHit = (bulletId: string) => {
-        // setBullets((bullets) => bullets.filter((b) => b.id !== bulletId));
+    const onHit = (bulletId: string, position: Vector3) => {
+        setBullets((bullets) => bullets.filter((b) => b.id !== bulletId));
+        setHits((hits) => [...hits, { id: bulletId, position }]);
+    };
+
+    const onHitEnded = (hitId: string) => {
+        setHits((hits) => hits.filter((hit) => hit.id !== hitId));
     };
 
     useEffect(() => {
@@ -145,10 +163,17 @@ const Experience = () => {
                     <Bullet
                         key={bullet.id}
                         {...bullet}
-                        onHit={() => onHit(bullet.id)}
+                        onHit={(position) => onHit(bullet.id, position)}
                     />
                 )
             )}
+            {(isHost() ? hits : (networkHits as HitProps[])).map((hit) => (
+                <BulletHit
+                    key={hit.id}
+                    {...hit}
+                    onEnded={() => onHitEnded(hit.id)}
+                />
+            ))}
             {/* <OrbitControls /> */}
         </>
     );

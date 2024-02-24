@@ -5,7 +5,7 @@ export const Leaderboard = () => {
     const players = usePlayersList(true);
     return (
         <>
-            <div className="fixed top-0 left-0 right-0 p-4 flex z-10 gap-4">
+            <div className="fixed top-20 left-0 right-0 p-4 flex z-10 gap-4">
                 {players.map((player) => (
                     <div
                         key={player.id}
