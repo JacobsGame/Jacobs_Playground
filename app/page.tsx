@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Home() {
     return (
         <Stack
-            mt="5em"
+            mt="10em"
             justifyContent={"center"}
             alignItems={"center"}
             // alignContent={"center"}
@@ -21,7 +21,7 @@ export default function Home() {
                 height={300}
                 priority
             />
-            <Typography variant="body1">測試</Typography>
+            <Typography variant="body1">My Name is Jacob</Typography>
         </Stack>
     );
 }

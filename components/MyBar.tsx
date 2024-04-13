@@ -28,7 +28,9 @@ export const MyBar = ({}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     return (
-        <AppBar position="static">
+        <AppBar
+        // position="static"
+        >
             <Toolbar>
                 <Link href="/">
                     <IconButton

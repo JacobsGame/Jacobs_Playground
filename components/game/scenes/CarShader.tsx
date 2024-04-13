@@ -6,8 +6,8 @@ export const CarShaderScene = () => {
     return (
         <Canvas
             style={{
-                width: "100vw",
-                height: "calc(100vh - 50px)",
+                width: "100%",
+                height: "100%",
             }}
         >
             <ambientLight intensity={Math.PI / 2} />
